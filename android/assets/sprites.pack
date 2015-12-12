@@ -1,0 +1,26 @@
+
+sprites.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+aid
+  rotate: false
+  xy: 1, 1
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+room
+  rotate: false
+  xy: 128, 1
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+Cat
+  rotate: false
+  xy: 255, 49
+  size: 50, 77
+  orig: 50, 77
+  offset: 0, 0
+  index: -1
