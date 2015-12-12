@@ -29,7 +29,7 @@ public class GameStage extends Stage {
     public MenuStage menu;
     private GUILayer layer = new GUILayer();
     private float points, cameraX = 0, cameraY = 0;
-    public float pointCoef = 5000f;
+    public float pointCoef = 5000f, lastx, lasty;
     AssetManager asset;
     private TextureAtlas atlas;
     private BitmapFont font;
@@ -70,18 +70,24 @@ public class GameStage extends Stage {
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int we) {
+                lastx = x;
+                lasty = y;
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int we) {
+                lastx = 0;
+                lasty = 0;
                 layer.tapHandleCrutch_up(event, x, y, pointer, we);
             }
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                cameraX = cameraX + x - 135;
-                cameraY = cameraY + y - 180;
+                cameraX += x - lastx;
+                cameraY += y - lasty;
+                lastx = x;
+                lasty = y;
             }
         });
     }
@@ -116,12 +122,14 @@ public class GameStage extends Stage {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         super.draw();
         getBatch().begin();
-
         bg.setCenterX(135);
         bg.setCenterY(180);
         bg.draw(getBatch());
+        getBatch().getTransformMatrix().translate(-cx, -cy, 0);
+        getBatch().end();
+        getBatch().begin();
         layer.draw(getBatch(), 1f);
         getBatch().end();
-        getBatch().getTransformMatrix().translate(-cx, -cy, 0);
+
     }
 }
