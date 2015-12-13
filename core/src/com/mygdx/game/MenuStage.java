@@ -64,6 +64,7 @@ public class MenuStage extends Stage {
     private void initAssets() {
         asset = new AssetManager();
         asset.load("gui.pack", TextureAtlas.class);
+        asset.load("sprites.pack", TextureAtlas.class);
         asset.load("bg.png", Texture.class);
         asset.finishLoading();
         GUIUtils.GUI_ATLAS = asset.get("gui.pack");

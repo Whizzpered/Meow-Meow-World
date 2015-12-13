@@ -7,7 +7,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -17,8 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.objects.Entity;
+import com.mygdx.game.objects.Room;
 import com.mygdx.gui.Element;
 import com.mygdx.gui.GUILayer;
+import java.util.ArrayList;
 
 /**
  *
@@ -36,7 +38,16 @@ public class GameStage extends Stage {
     private Sprite bg;
     public boolean changeEventColor = false;
     private boolean gameOver = false;
+    private ArrayList<Entity> entities = new ArrayList<Entity>();
 
+    public float getCameraX(){
+        return cameraX;
+    }
+    
+    public float getCameraY(){
+        return cameraY;
+    }
+    
     public boolean isGameOver() {
         return gameOver;
     }
@@ -90,10 +101,24 @@ public class GameStage extends Stage {
                 lasty = y;
             }
         });
+        addEntity(new Entity(80, 80));
+        addRoom(new Room(120, 120));
+    }
+
+    public void addEntity(Entity ent) {
+        addActor(ent);
+        ent.setSprite();
+        entities.add(ent);
+    }
+
+    public void addRoom(Room ent) {
+        addActor(ent);
+        ent.setSprite();
     }
 
     private void initAssets() {
         asset = menu.asset;
+        atlas = asset.get("sprites.pack");
         bg = new Sprite((Texture) asset.get("bg.png"));
         bg.setFlip(false, true);
         font = new BitmapFont(true);
@@ -101,6 +126,7 @@ public class GameStage extends Stage {
 
     @Override
     public void act(float delta) {
+        super.act(delta);
         layer.act(delta);
     }
 
@@ -117,18 +143,20 @@ public class GameStage extends Stage {
     @Override
     public void draw() {
         float cx = cameraX, cy = cameraY;
-        getBatch().getTransformMatrix().translate(cx, cy, 0);
         Gdx.gl.glClearColor(0.4f, 0.8f, 0.8f, 1f);//204.204.0
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        /*getBatch().begin();
+        {
+            bg.setCenterX(135);
+            bg.setCenterY(180);
+            bg.draw(getBatch());
+        }
+        getBatch().end();*/
         super.draw();
         getBatch().begin();
-        bg.setCenterX(135);
-        bg.setCenterY(180);
-        bg.draw(getBatch());
-        getBatch().getTransformMatrix().translate(-cx, -cy, 0);
-        getBatch().end();
-        getBatch().begin();
-        layer.draw(getBatch(), 1f);
+        {
+            layer.draw(getBatch(), 1f);
+        }
         getBatch().end();
 
     }
