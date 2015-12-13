@@ -39,6 +39,7 @@ public class GameStage extends Stage {
     public boolean changeEventColor = false;
     private boolean gameOver = false;
     private ArrayList<Entity> entities = new ArrayList<Entity>();
+    private ArrayList<Room> rooms = new ArrayList<Room>();
 
     public float getCameraX(){
         return cameraX;
@@ -114,6 +115,7 @@ public class GameStage extends Stage {
     public void addRoom(Room ent) {
         addActor(ent);
         ent.setSprite();
+        rooms.add(ent);
     }
 
     private void initAssets() {
