@@ -36,6 +36,9 @@ public abstract class Entity extends Actor{
     @Override
     public void act(float delta) {
         super.act(delta);
+        if((getY()+129)%125 !=0){
+            setY(getY()+1);
+        }
     }
     
     public void setSprite() {

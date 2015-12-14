@@ -49,7 +49,7 @@ public class Room extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlfa) {
-        sprite.setCenter(getX() * 125 + getStage().getCameraX() - 7865, getY() * 125 + getStage().getCameraY() - 15575);
+        sprite.setCenter(getX() * 125 + getStage().getCameraX() - 7865, getY() * 125 + getStage().getCameraY() - 15640);
         sprite.draw(batch);
     }
 }

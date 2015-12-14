@@ -110,11 +110,10 @@ public class GameStage extends Stage {
                 lasty = y;
             }
         });
-        addEntity(new Entity(80, 80) {
+        addEntity(new Entity(125, 225) {
         });
-        addRoom(new Room(65, 127));
+        addRoom(new Room(64, 126));
         addRoom(new Room(64, 127));
-        addRoom(new Room(63, 127));
     }
 
     public void addEntity(Entity ent) {
@@ -126,8 +125,8 @@ public class GameStage extends Stage {
     public void addRoom(Room ent) {
         addActor(ent);
         ent.setSprite();
-        if (rooms[(int)ent.getX()][(int)ent.getX()] == null) {
-            rooms[(int)ent.getX()][(int)ent.getX()] = ent;
+        if (rooms[(int)ent.getX()][(int)ent.getY()] == null) {
+            rooms[(int)ent.getX()][(int)ent.getY()] = ent;
         }
     }
 
@@ -146,7 +145,7 @@ public class GameStage extends Stage {
     }
 
     public void initGUI() {
-        layer.add(new Element("Pause", 135, 13, 52, 29) {
+        layer.add(new Element("Pause", 240, 13, 52, 29) {
             @Override
             public void tap() {
                 menu.gdxGame.stage = menu;
