@@ -14,7 +14,7 @@ import com.mygdx.game.GameStage;
  *
  * @author Whizzpered
  */
-public class Entity extends Actor{
+public abstract class Entity extends Actor{
     
     protected Sprite sprite;
     

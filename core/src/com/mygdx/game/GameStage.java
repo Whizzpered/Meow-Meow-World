@@ -39,8 +39,8 @@ public class GameStage extends Stage {
     private Sprite bg;
     public boolean changeEventColor = false;
     private boolean gameOver = false;
-    private ArrayList<Entity> entities = new ArrayList<Entity>();
-    private ArrayList<Room> rooms = new ArrayList<Room>();
+    private ArrayList<Entity> entities = new ArrayList<Entity>(32);
+    private Room[][] rooms = new Room[128][128];
 
     public float getCameraX() {
         return cameraX;
@@ -97,16 +97,24 @@ public class GameStage extends Stage {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                cameraX += x - lastx;
-                cameraY += y - lasty;
-                bgcamX += (x - lastx) / 2;
-                bgcamY += (y - lasty) / 2;
+                if (cameraX + x - lastx > -90 && cameraX + x - lastx < 90) {
+                    cameraX += x - lastx;
+                    bgcamX += (x - lastx) / 2;
+                }
+                /*if (cameraY + y - lasty > -100 && cameraY + y - lasty < 0) {
+                    cameraY += y - lasty;
+                    bgcamY += (y - lasty) / 2;
+                }*/
+
                 lastx = x;
                 lasty = y;
             }
         });
-        addEntity(new Entity(80, 80));
-        addRoom(new Room(120, 120));
+        addEntity(new Entity(80, 80) {
+        });
+        addRoom(new Room(65, 127));
+        addRoom(new Room(64, 127));
+        addRoom(new Room(63, 127));
     }
 
     public void addEntity(Entity ent) {
@@ -118,7 +126,9 @@ public class GameStage extends Stage {
     public void addRoom(Room ent) {
         addActor(ent);
         ent.setSprite();
-        rooms.add(ent);
+        if (rooms[(int)ent.getX()][(int)ent.getX()] == null) {
+            rooms[(int)ent.getX()][(int)ent.getX()] = ent;
+        }
     }
 
     private void initAssets() {
@@ -154,12 +164,16 @@ public class GameStage extends Stage {
         getBatch().begin();
         {
             getBatch().setProjectionMatrix(camera.combined);
-            bg.setCenterX(135 + bgcamX);
+            bg.setCenterX(135 + bgcamX);    //setting position of BackGround srpite with paralax
             bg.setCenterY(180 + bgcamY);
             bg.draw(getBatch());
 
-            for (Room r : rooms) {
-                r.draw(getBatch(), 1f);
+            for (Room[] room : rooms) {
+                for (Room r : room) {
+                    if (r != null) {
+                        r.draw(getBatch(), 1f);
+                    }
+                }
             }
 
             for (Entity ent : entities) {
