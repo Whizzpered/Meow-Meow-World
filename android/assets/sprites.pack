@@ -3,23 +3,135 @@ sprites.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+layer
+  rotate: false
+  xy: 1, 617
+  size: 360, 360
+  orig: 360, 360
+  offset: 0, 0
+  index: 1
+layer
+  rotate: false
+  xy: 1, 255
+  size: 360, 360
+  orig: 360, 360
+  offset: 0, 0
+  index: 2
+sky
+  rotate: false
+  xy: 363, 617
+  size: 360, 360
+  orig: 360, 360
+  offset: 0, 0
+  index: -1
 aid
+  rotate: false
+  xy: 1, 128
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+cat_room
+  rotate: false
+  xy: 363, 490
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+roof_center
+  rotate: false
+  xy: 725, 852
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+roof_left
   rotate: false
   xy: 1, 1
   size: 125, 125
   orig: 125, 125
   offset: 0, 0
   index: -1
+roof_right
+  rotate: false
+  xy: 128, 128
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
 room
+  rotate: false
+  xy: 363, 363
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+wall_left
+  rotate: false
+  xy: 490, 490
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+wall_left_bottom
+  rotate: false
+  xy: 725, 725
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+wall_left_down
+  rotate: false
+  xy: 725, 725
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+wall_right
+  rotate: false
+  xy: 852, 852
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+wall_right_bottom
   rotate: false
   xy: 128, 1
   size: 125, 125
   orig: 125, 125
   offset: 0, 0
   index: -1
+wall_right_top
+  rotate: false
+  xy: 490, 363
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+cloud
+  rotate: false
+  xy: 363, 286
+  size: 150, 75
+  orig: 150, 75
+  offset: 0, 0
+  index: 1
+cloud
+  rotate: false
+  xy: 725, 648
+  size: 150, 75
+  orig: 150, 75
+  offset: 0, 0
+  index: 2
+cloud
+  rotate: false
+  xy: 852, 775
+  size: 150, 75
+  orig: 150, 75
+  offset: 0, 0
+  index: 3
 Cat
   rotate: false
-  xy: 255, 49
+  xy: 255, 176
   size: 50, 77
   orig: 50, 77
   offset: 0, 0

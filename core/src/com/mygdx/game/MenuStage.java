@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.gui.Element;
 import com.mygdx.gui.GUILayer;
@@ -65,7 +64,6 @@ public class MenuStage extends Stage {
         asset = new AssetManager();
         asset.load("gui.pack", TextureAtlas.class);
         asset.load("sprites.pack", TextureAtlas.class);
-        asset.load("bg.png", Texture.class);
         asset.finishLoading();
         GUIUtils.GUI_ATLAS = asset.get("gui.pack");
         font = new BitmapFont(true);

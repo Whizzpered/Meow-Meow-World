@@ -7,6 +7,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -30,7 +31,7 @@ public class GameStage extends Stage {
 
     public MenuStage menu;
     private GUILayer layer = new GUILayer();
-    private float points, cameraX = 0, cameraY = 0;
+    private float points, cameraX = 0, cameraY = 0, bgcamX = 0, bgcamY = 0;
     public float pointCoef = 5000f, lastx, lasty;
     AssetManager asset;
     private TextureAtlas atlas;
@@ -41,14 +42,14 @@ public class GameStage extends Stage {
     private ArrayList<Entity> entities = new ArrayList<Entity>();
     private ArrayList<Room> rooms = new ArrayList<Room>();
 
-    public float getCameraX(){
+    public float getCameraX() {
         return cameraX;
     }
-    
-    public float getCameraY(){
+
+    public float getCameraY() {
         return cameraY;
     }
-    
+
     public boolean isGameOver() {
         return gameOver;
     }
@@ -98,6 +99,8 @@ public class GameStage extends Stage {
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 cameraX += x - lastx;
                 cameraY += y - lasty;
+                bgcamX += (x - lastx) / 2;
+                bgcamY += (y - lasty) / 2;
                 lastx = x;
                 lasty = y;
             }
@@ -121,7 +124,7 @@ public class GameStage extends Stage {
     private void initAssets() {
         asset = menu.asset;
         atlas = asset.get("sprites.pack");
-        bg = new Sprite((Texture) asset.get("bg.png"));
+        bg = atlas.createSprite("sky");
         bg.setFlip(false, true);
         font = new BitmapFont(true);
     }
@@ -144,22 +147,26 @@ public class GameStage extends Stage {
 
     @Override
     public void draw() {
-        float cx = cameraX, cy = cameraY;
-        Gdx.gl.glClearColor(0.4f, 0.8f, 0.8f, 1f);//204.204.0
+        Camera camera = getViewport().getCamera();
+        camera.update();
+        Gdx.gl.glClearColor(0.4f, 0.8f, 0.8f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        /*getBatch().begin();
-        {
-            bg.setCenterX(135);
-            bg.setCenterY(180);
-            bg.draw(getBatch());
-        }
-        getBatch().end();*/
-        super.draw();
         getBatch().begin();
         {
+            getBatch().setProjectionMatrix(camera.combined);
+            bg.setCenterX(135 + bgcamX);
+            bg.setCenterY(180 + bgcamY);
+            bg.draw(getBatch());
+
+            for (Room r : rooms) {
+                r.draw(getBatch(), 1f);
+            }
+
+            for (Entity ent : entities) {
+                ent.draw(getBatch(), 1f);
+            }
             layer.draw(getBatch(), 1f);
         }
         getBatch().end();
-
     }
 }

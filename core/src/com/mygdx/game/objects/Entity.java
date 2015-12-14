@@ -36,7 +36,6 @@ public class Entity extends Actor{
     @Override
     public void act(float delta) {
         super.act(delta);
-        
     }
     
     public void setSprite() {
