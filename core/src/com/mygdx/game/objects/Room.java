@@ -52,16 +52,19 @@ public class Room extends Actor {
 
         if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
             top = getStage().getAtlas().createSprite("roof_center");
+            top.setFlip(false,true);
         }
 
         if (getStage().getRoom((int) getX() - 1, (int) getY()) == null) {
             left = getStage().getAtlas().createSprite("wall_left");
+            left.setFlip(false,true);
             if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
                 //top = getStage().getAtlas().createSprite("roof_left");
             }
         }
         if (getStage().getRoom((int) getX() + 1, (int) getY()) == null) {
             right = getStage().getAtlas().createSprite("wall_right");
+            right.setFlip(false,true);
             if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
                 //top = getStage().getAtlas().createSprite("roof_right");
             }
