@@ -102,10 +102,10 @@ public class GameStage extends Stage {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                //if (cameraX + x - lastx > -90 && cameraX + x - lastx < 90) {
+                if (cameraX + x - lastx > - 1880-90 && cameraX + x - lastx < - 1880) {
                 cameraX += x - lastx;
                 bgcamX += (x - lastx) / 2;
-                //}
+                }
                 /*if (cameraY + y - lasty > -100 && cameraY + y - lasty < 0) {
                  cameraY += y - lasty;
                  bgcamY += (y - lasty) / 2;
