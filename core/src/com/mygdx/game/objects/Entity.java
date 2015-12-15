@@ -21,7 +21,7 @@ public abstract class Entity extends Actor {
 
     protected Sprite sprite;
     float ex, ey;
-    protected float velocityx=3, velocityy=3, accelerationy=1;
+    protected float velocityx = 3, velocityy = 3, accelerationy = 1;
     Random r = new Random();
 
     @Override

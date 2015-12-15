@@ -31,18 +31,18 @@ public class GameStage extends Stage {
 
     public MenuStage menu;
     private GUILayer layer = new GUILayer();
-    private float points, cameraX = - 1880, cameraY = - 7640, bgcamX = 0, bgcamY = 0;
+    private float points, cameraX = - 1880, cameraY = - 7640, bgcamX = 0, bgcamY = 0, lcamX = 0, lcamY = 0;
     public float pointCoef = 5000f, lastx, lasty;
     public float gold, food;
     AssetManager asset;
     private TextureAtlas atlas;
     private BitmapFont font;
-    private Sprite bg;
+    private Sprite bg, trees;
     public boolean changeEventColor = false;
     private boolean gameOver = false;
     private ArrayList<Entity> entities = new ArrayList<Entity>(32);
     private Room[][] rooms = new Room[32][64];
-    
+
     public Room[][] getRooms() {
         return rooms;
     }
@@ -82,6 +82,14 @@ public class GameStage extends Stage {
         initialize();
     }
 
+    public Room getRoom(int x, int y) {
+        if (x >= 0 && x < 32 && y < 64 && y >= 0) {
+            return (getRooms()[x][y]);
+        } else {
+            return null;
+        }
+    }
+
     public void initialize() {
         initAssets();
         initGUI();
@@ -102,9 +110,10 @@ public class GameStage extends Stage {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                if (cameraX + x - lastx > - 1880-90 && cameraX + x - lastx < - 1880) {
-                cameraX += x - lastx;
-                bgcamX += (x - lastx) / 2;
+                if (cameraX + x - lastx > - 1880 - 90 && cameraX + x - lastx < - 1880) {
+                    cameraX += x - lastx;
+                    bgcamX += (x - lastx) / 3;
+                    lcamX += (x - lastx) / 2;
                 }
                 /*if (cameraY + y - lasty > -100 && cameraY + y - lasty < 0) {
                  cameraY += y - lasty;
@@ -140,6 +149,8 @@ public class GameStage extends Stage {
         atlas = asset.get("sprites.pack");
         bg = atlas.createSprite("sky");
         bg.setFlip(false, true);
+        trees = atlas.createSprite("layer");
+        trees.setFlip(false, true);
         font = new BitmapFont(true);
     }
 
@@ -168,9 +179,10 @@ public class GameStage extends Stage {
         getBatch().begin();
         {
             getBatch().setProjectionMatrix(camera.combined);
-            bg.setX(bgcamX);    //setting position of BackGround srpite with paralax
-            bg.setY(bgcamY);
+            bg.setPosition(bgcamX, bgcamY);    //setting position of BackGround srpite with paralax*3
             bg.draw(getBatch());
+            trees.setPosition(lcamX, lcamY);    //setting position of Trees srpite with paralax*2
+            trees.draw(getBatch());
 
             for (Room[] room : rooms) {
                 for (Room r : room) {
