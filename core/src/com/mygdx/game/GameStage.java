@@ -31,8 +31,9 @@ public class GameStage extends Stage {
 
     public MenuStage menu;
     private GUILayer layer = new GUILayer();
-    private float points, cameraX = 0, cameraY = 0, bgcamX = 0, bgcamY = 0;
+    private float points, cameraX = - 1880, cameraY = - 7640, bgcamX = 0, bgcamY = 0;
     public float pointCoef = 5000f, lastx, lasty;
+    public float gold, food;
     AssetManager asset;
     private TextureAtlas atlas;
     private BitmapFont font;
@@ -40,7 +41,11 @@ public class GameStage extends Stage {
     public boolean changeEventColor = false;
     private boolean gameOver = false;
     private ArrayList<Entity> entities = new ArrayList<Entity>(32);
-    private Room[][] rooms = new Room[128][128];
+    private Room[][] rooms = new Room[32][64];
+    
+    public Room[][] getRooms() {
+        return rooms;
+    }
 
     public float getCameraX() {
         return cameraX;
@@ -97,23 +102,23 @@ public class GameStage extends Stage {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                if (cameraX + x - lastx > -90 && cameraX + x - lastx < 90) {
-                    cameraX += x - lastx;
-                    bgcamX += (x - lastx) / 2;
-                }
+                //if (cameraX + x - lastx > -90 && cameraX + x - lastx < 90) {
+                cameraX += x - lastx;
+                bgcamX += (x - lastx) / 2;
+                //}
                 /*if (cameraY + y - lasty > -100 && cameraY + y - lasty < 0) {
-                    cameraY += y - lasty;
-                    bgcamY += (y - lasty) / 2;
-                }*/
+                 cameraY += y - lasty;
+                 bgcamY += (y - lasty) / 2;
+                 }*/
 
                 lastx = x;
                 lasty = y;
             }
         });
-        addEntity(new Entity(125, 225) {
+        addEntity(new Entity(16 * 125, 61 * 125) {
         });
-        addRoom(new Room(64, 126));
-        addRoom(new Room(64, 127));
+        addRoom(new Room(16, 63));
+        addRoom(new Room(16, 62));
     }
 
     public void addEntity(Entity ent) {
@@ -125,8 +130,8 @@ public class GameStage extends Stage {
     public void addRoom(Room ent) {
         addActor(ent);
         ent.setSprite();
-        if (rooms[(int)ent.getX()][(int)ent.getY()] == null) {
-            rooms[(int)ent.getX()][(int)ent.getY()] = ent;
+        if (rooms[(int) ent.getX()][(int) ent.getY()] == null) {
+            rooms[(int) ent.getX()][(int) ent.getY()] = ent;
         }
     }
 
@@ -163,8 +168,8 @@ public class GameStage extends Stage {
         getBatch().begin();
         {
             getBatch().setProjectionMatrix(camera.combined);
-            bg.setCenterX(135 + bgcamX);    //setting position of BackGround srpite with paralax
-            bg.setCenterY(180 + bgcamY);
+            bg.setX(bgcamX);    //setting position of BackGround srpite with paralax
+            bg.setY(bgcamY);
             bg.draw(getBatch());
 
             for (Room[] room : rooms) {
@@ -179,6 +184,8 @@ public class GameStage extends Stage {
                 ent.draw(getBatch(), 1f);
             }
             layer.draw(getBatch(), 1f);
+            font.draw(getBatch(), "Gold: " + gold, 5f, 10f);
+            font.draw(getBatch(), "Food: " + food, 5f, 25f);
         }
         getBatch().end();
     }
