@@ -17,7 +17,7 @@ import com.mygdx.game.GameStage;
 public class Room extends Actor {
 
     protected Sprite sprite;
-    Sprite right, left, top;
+    Sprite right, left, top, top_left, top_right;
 
     @Override
     public GameStage getStage() {
@@ -59,16 +59,17 @@ public class Room extends Actor {
             left = getStage().getAtlas().createSprite("wall_left");
             left.setFlip(false,true);
             if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
-                //top = getStage().getAtlas().createSprite("roof_left");
+                top_left = getStage().getAtlas().createSprite("roof_left");
             }
         }
         if (getStage().getRoom((int) getX() + 1, (int) getY()) == null) {
             right = getStage().getAtlas().createSprite("wall_right");
             right.setFlip(false,true);
             if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
-                //top = getStage().getAtlas().createSprite("roof_right");
+                top_right = getStage().getAtlas().createSprite("roof_right");
             }
         }
+        
     }
 
     @Override
@@ -87,6 +88,13 @@ public class Room extends Actor {
             top.setPosition(sprite.getX(), sprite.getY() - top.getHeight());
             top.draw(batch);
         }
-
+        if(top_left!=null){
+            top_left.setPosition(sprite.getX() - top_left.getWidth(), sprite.getY() - top_left.getHeight());
+            top_left.draw(batch);
+        }
+        if(top_right!=null){
+            top_right.setPosition(sprite.getX() + top_right.getWidth(), sprite.getY() - top_right.getHeight());
+            top_right.draw(batch);
+        }
     }
 }
