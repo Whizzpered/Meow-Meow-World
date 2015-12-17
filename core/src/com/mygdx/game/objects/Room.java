@@ -49,27 +49,26 @@ public class Room extends Actor {
     }
 
     public void setWalls() {
-
         if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
             top = getStage().getAtlas().createSprite("roof_center");
-            top.setFlip(false,true);
+            top.setFlip(false, false);
         }
 
         if (getStage().getRoom((int) getX() - 1, (int) getY()) == null) {
             left = getStage().getAtlas().createSprite("wall_left");
-            left.setFlip(false,true);
+            left.setFlip(false, true);
             if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
                 top_left = getStage().getAtlas().createSprite("roof_left");
             }
         }
         if (getStage().getRoom((int) getX() + 1, (int) getY()) == null) {
             right = getStage().getAtlas().createSprite("wall_right");
-            right.setFlip(false,true);
+            right.setFlip(false, true);
             if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
                 top_right = getStage().getAtlas().createSprite("roof_right");
             }
         }
-        
+
     }
 
     @Override
@@ -87,12 +86,13 @@ public class Room extends Actor {
         if (top != null) {
             top.setPosition(sprite.getX(), sprite.getY() - top.getHeight());
             top.draw(batch);
+            getStage().getFont().draw(batch, getY() + "", sprite.getX(), sprite.getY() - top.getHeight());
         }
-        if(top_left!=null){
+        if (top_left != null) {
             top_left.setPosition(sprite.getX() - top_left.getWidth(), sprite.getY() - top_left.getHeight());
             top_left.draw(batch);
         }
-        if(top_right!=null){
+        if (top_right != null) {
             top_right.setPosition(sprite.getX() + top_right.getWidth(), sprite.getY() - top_right.getHeight());
             top_right.draw(batch);
         }

@@ -63,7 +63,6 @@ public class GameStage extends Stage {
         gameOver = gameover;
     }
 
-    //list of Events that are currently working
     public BitmapFont getFont() {
         return font;
     }
@@ -142,6 +141,13 @@ public class GameStage extends Stage {
         if (rooms[(int) ent.getX()][(int) ent.getY()] == null) {
             rooms[(int) ent.getX()][(int) ent.getY()] = ent;
         }
+        for (Room[] room : rooms) {
+                for (Room r : room) {
+                    if (r != null) {
+                        r.setWalls();
+                    }
+                }
+            }
     }
 
     private void initAssets() {
