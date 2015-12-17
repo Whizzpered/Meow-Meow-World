@@ -3,7 +3,7 @@ gui.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Exit (1)
+build
   rotate: false
   xy: 1, 1
   size: 52, 29
@@ -17,7 +17,7 @@ Exit
   orig: 52, 29
   offset: 0, 0
   index: -1
-Pause
+Options
   rotate: false
   xy: 109, 1
   size: 52, 29

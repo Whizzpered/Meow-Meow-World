@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import static com.mygdx.game.Condition.*;
 import com.mygdx.game.objects.Entity;
 import com.mygdx.game.objects.Room;
 import com.mygdx.gui.Element;
@@ -42,6 +43,8 @@ public class GameStage extends Stage {
     private boolean gameOver = false;
     private ArrayList<Entity> entities = new ArrayList<Entity>(32);
     private Room[][] rooms = new Room[32][64];
+    private Room buildHand;
+    private Condition condition = USUALLY;
 
     public Room[][] getRooms() {
         return rooms;
@@ -97,6 +100,17 @@ public class GameStage extends Stage {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int we) {
                 lastx = x;
                 lasty = y;
+                if (buildHand != null) {
+                    if (rooms[(int) (x - cameraX) / 125][(int) (y - cameraY) / 125] == null) {
+                        buildHand.setX((int) (x - cameraX) / 125);
+                        buildHand.getSprite().setAlpha(2f);
+                        buildHand.setY((int) (y - cameraY) / 125);
+                        rooms[(int) (x - cameraX) / 125][(int) (y - cameraY) / 125] = buildHand;
+                        
+                    }
+                    condition = USUALLY;
+                    buildHand = null;
+                }
                 return true;
             }
 
@@ -146,12 +160,12 @@ public class GameStage extends Stage {
             rooms[(int) ent.getX()][(int) ent.getY()] = ent;
         }
         for (Room[] room : rooms) {
-                for (Room r : room) {
-                    if (r != null) {
-                        r.setWalls();
-                    }
+            for (Room r : room) {
+                if (r != null) {
+                    r.setWalls();
                 }
             }
+        }
     }
 
     private void initAssets() {
@@ -171,11 +185,20 @@ public class GameStage extends Stage {
     }
 
     public void initGUI() {
-        layer.add(new Element("Pause", 240, 13, 52, 29) {
+        layer.add(new Element("Options", 240, 13, 52, 29) {
             @Override
             public void tap() {
                 menu.gdxGame.stage = menu;
                 Gdx.input.setInputProcessor(menu);
+            }
+        });
+        layer.add(new Element("build", 240, 53, 52, 29) {
+            @Override
+            public void tap() {
+                condition = BUILDING;
+                buildHand = new Room(0, 0);
+                addActor(buildHand);
+                buildHand.setSprite();
             }
         });
     }
@@ -189,7 +212,7 @@ public class GameStage extends Stage {
         getBatch().begin();
         {
             getBatch().setProjectionMatrix(camera.combined);
-            bg.setPosition(bgcamX, bgcamY);    //setting position of BackGround srpite with paralax*3
+            bg.setPosition(bgcamX / (150 * 32 - bgcamX) * 360 * 3, bgcamY);    //setting position of BackGround srpite with paralax*3
             bg.draw(getBatch());
             trees.setPosition(lcamX, lcamY);    //setting position of Trees srpite with paralax*2
             trees.draw(getBatch());
@@ -208,6 +231,11 @@ public class GameStage extends Stage {
             layer.draw(getBatch(), 1f);
             font.draw(getBatch(), "Gold: " + gold, 5f, 10f);
             font.draw(getBatch(), "Food: " + food, 5f, 25f);
+            if (buildHand != null) {
+                buildHand.getSprite().setAlpha(0.5f);
+                buildHand.getSprite().setPosition(129, 129);
+                buildHand.getSprite().draw(getBatch());
+            }
         }
         getBatch().end();
     }
