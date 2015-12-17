@@ -17,7 +17,7 @@ import com.mygdx.game.GameStage;
 public class Room extends Actor {
 
     protected Sprite sprite;
-    Sprite right, left, top, top_left, top_right;
+    static Sprite right, left, top, top_left, top_right;
 
     @Override
     public GameStage getStage() {
@@ -59,8 +59,7 @@ public class Room extends Actor {
             top.setFlip(false, true);
         }
         if (getStage().getRoom((int) getX() - 1, (int) getY()) == null) {
-            left = getStage().getAtlas().createSprite("wall_left");
-            left.setFlip(false, true);
+            
             if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
                 left = getStage().getAtlas().createSprite("wall_left_bottom");
                 left.setFlip(false, true);
@@ -68,21 +67,25 @@ public class Room extends Actor {
             if (getStage().getRoom((int) getX(), (int) getY() - 1) == null) {
                 top_left = getStage().getAtlas().createSprite("roof_left");
                 top_left.setFlip(false, true);
+                left = getStage().getAtlas().createSprite("wall_left_top");
+                left.setFlip(false, true);
             }
+            left = getStage().getAtlas().createSprite("wall_left");
+            left.setFlip(false, true);
         }
         if (getStage().getRoom((int) getX() + 1, (int) getY()) == null) {
-            right = getStage().getAtlas().createSprite("wall_right");
-            right.setFlip(false, true);
+            if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
+                right = getStage().getAtlas().createSprite("wall_right_bottom");
+                right.setFlip(false, true);
+            }
             if (getStage().getRoom((int) getX(), (int) getY() - 1) == null) {
                 right = getStage().getAtlas().createSprite("wall_right_top");
                 right.setFlip(false, true);
                 top_right = getStage().getAtlas().createSprite("roof_right");
                 top_right.setFlip(false, true);
             }
-            if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
-                right = getStage().getAtlas().createSprite("wall_right_bottom");
-                right.setFlip(false, true);
-            }
+            right = getStage().getAtlas().createSprite("wall_right");
+            right.setFlip(false, true);
         }
 
     }

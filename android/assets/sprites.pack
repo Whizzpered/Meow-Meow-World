@@ -80,30 +80,30 @@ wall_left_bottom
   orig: 125, 125
   offset: 0, 0
   index: -1
-wall_left_down
-  rotate: false
-  xy: 725, 725
-  size: 125, 125
-  orig: 125, 125
-  offset: 0, 0
-  index: -1
-wall_right
+wall_left_top
   rotate: false
   xy: 852, 852
   size: 125, 125
   orig: 125, 125
   offset: 0, 0
   index: -1
-wall_right_bottom
+wall_right
   rotate: false
   xy: 128, 1
   size: 125, 125
   orig: 125, 125
   offset: 0, 0
   index: -1
-wall_right_top
+wall_right_bottom
   rotate: false
   xy: 490, 363
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+wall_right_top
+  rotate: false
+  xy: 852, 725
   size: 125, 125
   orig: 125, 125
   offset: 0, 0
@@ -124,14 +124,14 @@ cloud
   index: 2
 cloud
   rotate: false
-  xy: 852, 775
+  xy: 255, 178
   size: 150, 75
   orig: 150, 75
   offset: 0, 0
   index: 3
 Cat
   rotate: false
-  xy: 255, 176
+  xy: 617, 538
   size: 50, 77
   orig: 50, 77
   offset: 0, 0
