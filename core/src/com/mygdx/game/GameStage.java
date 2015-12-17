@@ -109,7 +109,7 @@ public class GameStage extends Stage {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                if (cameraX + x - lastx > - 1880 - 90 && cameraX + x - lastx < - 1880) {
+                if (cameraX + x - lastx > - 1880 - 150 && cameraX + x - lastx < - 1880 + 90) {
                     cameraX += x - lastx;
                     bgcamX += (x - lastx) / 3;
                     lcamX += (x - lastx) / 2;
@@ -127,6 +127,10 @@ public class GameStage extends Stage {
         });
         addRoom(new Room(16, 63));
         addRoom(new Room(16, 62));
+        addRoom(new Room(15, 62));
+        addRoom(new Room(17, 62));
+        addRoom(new Room(15, 63));
+        addRoom(new Room(17, 63));
     }
 
     public void addEntity(Entity ent) {

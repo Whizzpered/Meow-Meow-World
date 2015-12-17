@@ -49,23 +49,39 @@ public class Room extends Actor {
     }
 
     public void setWalls() {
-        if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
+        right = null;
+        left = null;
+        top = null;
+        top_left = null;
+        top_right = null;
+        if (getStage().getRoom((int) getX(), (int) getY() - 1) == null) {
             top = getStage().getAtlas().createSprite("roof_center");
-            top.setFlip(false, false);
+            top.setFlip(false, true);
         }
-
         if (getStage().getRoom((int) getX() - 1, (int) getY()) == null) {
             left = getStage().getAtlas().createSprite("wall_left");
             left.setFlip(false, true);
             if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
+                left = getStage().getAtlas().createSprite("wall_left_bottom");
+                left.setFlip(false, true);
+            }
+            if (getStage().getRoom((int) getX(), (int) getY() - 1) == null) {
                 top_left = getStage().getAtlas().createSprite("roof_left");
+                top_left.setFlip(false, true);
             }
         }
         if (getStage().getRoom((int) getX() + 1, (int) getY()) == null) {
             right = getStage().getAtlas().createSprite("wall_right");
             right.setFlip(false, true);
-            if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
+            if (getStage().getRoom((int) getX(), (int) getY() - 1) == null) {
+                right = getStage().getAtlas().createSprite("wall_right_top");
+                right.setFlip(false, true);
                 top_right = getStage().getAtlas().createSprite("roof_right");
+                top_right.setFlip(false, true);
+            }
+            if (getStage().getRoom((int) getX(), (int) getY() + 1) == null) {
+                right = getStage().getAtlas().createSprite("wall_right_bottom");
+                right.setFlip(false, true);
             }
         }
 
@@ -86,7 +102,7 @@ public class Room extends Actor {
         if (top != null) {
             top.setPosition(sprite.getX(), sprite.getY() - top.getHeight());
             top.draw(batch);
-            getStage().getFont().draw(batch, getY() + "", sprite.getX(), sprite.getY() - top.getHeight());
+            getStage().getFont().draw(batch, getY() + "", sprite.getX(), sprite.getY() - top.getHeight() * 2);
         }
         if (top_left != null) {
             top_left.setPosition(sprite.getX() - top_left.getWidth(), sprite.getY() - top_left.getHeight());
