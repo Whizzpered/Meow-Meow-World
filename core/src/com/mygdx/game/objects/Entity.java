@@ -50,7 +50,7 @@ public abstract class Entity extends Actor {
         super.act(delta);
         Room r = getStage().getRooms()[(int) ((getX() + 10) / 125)][(int) (getY() / 125)];
         if (ey == 0 && r != null && getY() == (r.getY()) * 125 + 58) {
-            goTo(1, 0);
+            goTo(0, 0);
         } else {
             setY(getY() + 1);
         }

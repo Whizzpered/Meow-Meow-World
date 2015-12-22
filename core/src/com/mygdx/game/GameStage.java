@@ -44,6 +44,7 @@ public class GameStage extends Stage {
     private ArrayList<Entity> entities = new ArrayList<Entity>(32);
     private Room[][] rooms = new Room[32][64];
     private Room buildHand;
+    private float buildx, buildy;
     private Condition condition = USUALLY;
 
     public Room[][] getRooms() {
@@ -100,17 +101,6 @@ public class GameStage extends Stage {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int we) {
                 lastx = x;
                 lasty = y;
-                if (buildHand != null) {
-                    if (rooms[(int) (x - cameraX) / 125][(int) (y - cameraY) / 125] == null) {
-                        buildHand.setX((int) (x - cameraX) / 125);
-                        buildHand.getSprite().setAlpha(2f);
-                        buildHand.setY((int) (y - cameraY) / 125);
-                        rooms[(int) (x - cameraX) / 125][(int) (y - cameraY) / 125] = buildHand;
-                        
-                    }
-                    condition = USUALLY;
-                    buildHand = null;
-                }
                 return true;
             }
 
@@ -123,18 +113,26 @@ public class GameStage extends Stage {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                if (cameraX + x - lastx > - 1880 - 150 && cameraX + x - lastx < - 1880 + 90) {
-                    cameraX += x - lastx;
-                    bgcamX += (x - lastx) / 3;
-                    lcamX += (x - lastx) / 2;
+                if (condition == BUILDING){
+                    Gdx.app.log((x + buildx)+"", (y + buildy)+"");
                 }
-                /*if (cameraY + y - lasty > -100 && cameraY + y - lasty < 0) {
-                 cameraY += y - lasty;
-                 bgcamY += (y - lasty) / 2;
-                 }*/
+                if (condition == BUILDING && Math.abs(x + buildx) < 190 && Math.abs(y + buildy) < 190) {
+                    buildx = x;
+                    buildy = y;
+                } else {
+                    if (cameraX + x - lastx > - 1880 - 150 && cameraX + x - lastx < - 1880 + 120) {
+                        cameraX += x - lastx;
+                        bgcamX += (x - lastx) / 3;
+                        lcamX += (x - lastx) / 2;
+                    }
+                    if (cameraY + y - lasty > - 7640 && cameraY + y - lasty < - 7640 + 100) {
+                        cameraY += y - lasty;
+                        bgcamY += (y - lasty) / 2;
+                    }
 
-                lastx = x;
-                lasty = y;
+                    lastx = x;
+                    lasty = y;
+                }
             }
         });
         addEntity(new Entity(16 * 125, 61 * 125) {
@@ -198,6 +196,8 @@ public class GameStage extends Stage {
                 condition = BUILDING;
                 buildHand = new Room(0, 0);
                 addActor(buildHand);
+                buildx = getWidth() / 2;
+                buildy = getHeight() / 2;
                 buildHand.setSprite();
             }
         });
@@ -212,9 +212,9 @@ public class GameStage extends Stage {
         getBatch().begin();
         {
             getBatch().setProjectionMatrix(camera.combined);
-            bg.setPosition(bgcamX / (150 * 32 - bgcamX) * 360 * 3, bgcamY);    //setting position of BackGround srpite with paralax*3
+            bg.setPosition(0, 0);
             bg.draw(getBatch());
-            trees.setPosition(lcamX, lcamY);    //setting position of Trees srpite with paralax*2
+            trees.setPosition(lcamX, lcamY);
             trees.draw(getBatch());
 
             for (Room[] room : rooms) {
@@ -233,7 +233,7 @@ public class GameStage extends Stage {
             font.draw(getBatch(), "Food: " + food, 5f, 25f);
             if (buildHand != null) {
                 buildHand.getSprite().setAlpha(0.5f);
-                buildHand.getSprite().setPosition(129, 129);
+                buildHand.getSprite().setCenter(buildx, buildy);
                 buildHand.getSprite().draw(getBatch());
             }
         }
