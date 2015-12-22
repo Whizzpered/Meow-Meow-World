@@ -45,6 +45,7 @@ public class GameStage extends Stage {
     private Room[][] rooms = new Room[32][64];
     private Room buildHand;
     private float buildx, buildy;
+    private float buildDeltaX, buildDeltaY;
     private Condition condition = USUALLY;
 
     public Room[][] getRooms() {
@@ -97,10 +98,16 @@ public class GameStage extends Stage {
         initAssets();
         initGUI();
         addListener(new InputListener() {
+
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int we) {
                 lastx = x;
                 lasty = y;
+                if (condition == BUILDING && Math.abs(x - buildx) < buildHand.getWidth() / 2
+                        && Math.abs(y - buildy) < buildHand.getHeight() / 2) {
+                    buildDeltaX = buildx - x;
+                    buildDeltaY = buildy - y;
+                }
                 return true;
             }
 
@@ -109,16 +116,22 @@ public class GameStage extends Stage {
                 lastx = 0;
                 lasty = 0;
                 layer.tapHandleCrutch_up(event, x, y, pointer, we);
+                if (condition == BUILDING) {
+                    buildx = (int) ((buildx-cameraX) / 125) * 125 + cameraX;
+                    buildy = (int) ((buildy-cameraY) / 125) * 125 + cameraY;
+                    buildHand.setX((int) ((buildx-cameraX) / 125));
+                    buildHand.setY((int) ((buildy-cameraY) / 125));
+                    if(addRoom(buildHand))condition = USUALLY;
+                }
             }
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                if (condition == BUILDING){
-                    Gdx.app.log((x + buildx)+"", (y + buildy)+"");
-                }
-                if (condition == BUILDING && Math.abs(x + buildx) < 190 && Math.abs(y + buildy) < 190) {
-                    buildx = x;
-                    buildy = y;
+
+                if (condition == BUILDING && Math.abs(x - buildx) < buildHand.getWidth() / 2
+                        && Math.abs(y - buildy) < buildHand.getHeight() / 2) {
+                    buildx = x + buildDeltaX;
+                    buildy = y + buildDeltaY;
                 } else {
                     if (cameraX + x - lastx > - 1880 - 150 && cameraX + x - lastx < - 1880 + 120) {
                         cameraX += x - lastx;
@@ -151,11 +164,17 @@ public class GameStage extends Stage {
         entities.add(ent);
     }
 
-    public void addRoom(Room ent) {
+    public boolean addRoom(Room ent) {
+        boolean ass=false;
         addActor(ent);
         ent.setSprite();
         if (rooms[(int) ent.getX()][(int) ent.getY()] == null) {
             rooms[(int) ent.getX()][(int) ent.getY()] = ent;
+            if(ent==buildHand){
+                buildHand.getSprite().setAlpha(2f);
+                buildHand = null;
+            }
+            ass = true;
         }
         for (Room[] room : rooms) {
             for (Room r : room) {
@@ -164,6 +183,7 @@ public class GameStage extends Stage {
                 }
             }
         }
+        return ass;
     }
 
     private void initAssets() {
@@ -196,8 +216,8 @@ public class GameStage extends Stage {
                 condition = BUILDING;
                 buildHand = new Room(0, 0);
                 addActor(buildHand);
-                buildx = getWidth() / 2;
-                buildy = getHeight() / 2;
+                buildx = getViewport().getCamera().viewportWidth/2;
+                buildy = getViewport().getCamera().viewportHeight/2;
                 buildHand.setSprite();
             }
         });
