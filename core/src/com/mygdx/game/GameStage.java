@@ -33,7 +33,7 @@ public class GameStage extends Stage {
     public MenuStage menu;
     private GUILayer layer = new GUILayer();
     private float points, cameraX = - 1880, cameraY = - 7640, bgcamX = 0, bgcamY = 0, lcamX = 0, lcamY = 0;
-    public float pointCoef = 5000f, lastx, lasty;
+    public float pointCoef = 5000f, lastx, lasty, cameraWidth = 240, cameraHeight = 120;
     public float gold, food;
     AssetManager asset;
     private TextureAtlas atlas;
@@ -117,11 +117,13 @@ public class GameStage extends Stage {
                 lasty = 0;
                 layer.tapHandleCrutch_up(event, x, y, pointer, we);
                 if (condition == BUILDING) {
-                    buildx = (int) ((buildx-cameraX) / 125) * 125 + cameraX;
-                    buildy = (int) ((buildy-cameraY) / 125) * 125 + cameraY;
-                    buildHand.setX((int) ((buildx-cameraX) / 125));
-                    buildHand.setY((int) ((buildy-cameraY) / 125));
-                    if(addRoom(buildHand))condition = USUALLY;
+                    buildx = (int) ((buildx - cameraX) / 125) * 125 + cameraX;
+                    buildy = (int) ((buildy - cameraY) / 125) * 125 + cameraY;
+                    buildHand.setX((int) ((buildx - cameraX) / 125));
+                    buildHand.setY((int) ((buildy - cameraY) / 125));
+                    if (addRoom(buildHand)) {
+                        condition = USUALLY;
+                    }
                 }
             }
 
@@ -133,12 +135,12 @@ public class GameStage extends Stage {
                     buildx = x + buildDeltaX;
                     buildy = y + buildDeltaY;
                 } else {
-                    if (cameraX + x - lastx > - 1880 - 150 && cameraX + x - lastx < - 1880 + 120) {
+                    if (cameraX + x - lastx > - 1880 - cameraWidth / 2 && cameraX + x - lastx < - 1880 + cameraWidth / 2) {
                         cameraX += x - lastx;
                         bgcamX += (x - lastx) / 3;
                         lcamX += (x - lastx) / 2;
                     }
-                    if (cameraY + y - lasty > - 7640 && cameraY + y - lasty < - 7640 + 100) {
+                    if (cameraY + y - lasty > - 7640 && cameraY + y - lasty < - 7640 + cameraHeight) {
                         cameraY += y - lasty;
                         bgcamY += (y - lasty) / 2;
                     }
@@ -148,14 +150,16 @@ public class GameStage extends Stage {
                 }
             }
         });
-        addEntity(new Entity(16 * 125, 61 * 125) {
+        addEntity(new Entity(15 * 125, 63 * 125 - 5) {
         });
+        addRoom(new Room(16, 61));
+        addRoom(new Room(16, 60));
+        addRoom(new Room(15, 61));
+        addRoom(new Room(15, 60));
         addRoom(new Room(16, 63));
         addRoom(new Room(16, 62));
         addRoom(new Room(15, 62));
-        addRoom(new Room(17, 62));
         addRoom(new Room(15, 63));
-        addRoom(new Room(17, 63));
     }
 
     public void addEntity(Entity ent) {
@@ -165,12 +169,12 @@ public class GameStage extends Stage {
     }
 
     public boolean addRoom(Room ent) {
-        boolean ass=false;
+        boolean ass = false;
         addActor(ent);
         ent.setSprite();
         if (rooms[(int) ent.getX()][(int) ent.getY()] == null) {
             rooms[(int) ent.getX()][(int) ent.getY()] = ent;
-            if(ent==buildHand){
+            if (ent == buildHand) {
                 buildHand.getSprite().setAlpha(2f);
                 buildHand = null;
             }
@@ -216,8 +220,8 @@ public class GameStage extends Stage {
                 condition = BUILDING;
                 buildHand = new Room(0, 0);
                 addActor(buildHand);
-                buildx = getViewport().getCamera().viewportWidth/2;
-                buildy = getViewport().getCamera().viewportHeight/2;
+                buildx = getViewport().getCamera().viewportWidth / 2;
+                buildy = getViewport().getCamera().viewportHeight / 2;
                 buildHand.setSprite();
             }
         });

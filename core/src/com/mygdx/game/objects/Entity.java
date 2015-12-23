@@ -11,7 +11,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.GameStage;
-import java.util.Random;
+import java.awt.Point;
+import java.util.Stack;
 
 /**
  *
@@ -20,9 +21,9 @@ import java.util.Random;
 public abstract class Entity extends Actor {
 
     protected Sprite sprite;
-    float ex, ey;
-    protected float velocityx = 3, velocityy = 3, accelerationy = 1;
-    Random r = new Random();
+    protected float velocityx = 1, velocityy = 1;
+    Stack<Point> path = new Stack<Point>();
+    private Point target;
 
     @Override
     public GameStage getStage() {
@@ -39,21 +40,56 @@ public abstract class Entity extends Actor {
         setName("Cat");
     }
 
-    public void goTo(int directionx, int directiony) {
-        setX(getX() + velocityx * directionx);
-        setY(getY() + velocityy * directiony);
-        velocityy += accelerationy;
+    public void moveTo(int endx, int endy) {
+        int dx = endx - (int) getX() / 125;
+        int dy = endy - (int) getY() / 125;
+
+        for (int i = 0; i < dx; i++) {
+            path.push(new Point(endx + i, endy));
+        }
+        for (int i = 0; i < dy; i++) {
+            path.push(new Point(endx, endy + i));
+        }
+        for (int i = 0; i > dx; i--) {
+            path.push(new Point(endx + i, endy));
+        }
+        for (int i = 0; i > dy; i--) {
+            path.push(new Point(endx, endy + i));
+        }
+    }
+
+    public void goTo() {
+        Gdx.app.log("Volvo", path.size() + "");
+        if (target == null) {
+            if (path.size() > 0) {
+                target = path.pop();
+            }
+        }
+        if (target != null) {
+            int rx = (int) getX() / 125, ry = (int) getY() / 125;
+            if (rx == target.x && ry == target.y) {
+                target = null;
+            } else {
+                int directionx = 0, directiony = 0;
+                if (target.x != rx) {
+                    directionx = (target.x - rx) / Math.abs(target.x - rx);
+                }
+                if (target.y != ry) {
+                    directiony = (target.y - ry) / Math.abs(target.y - ry);
+                }
+                Gdx.app.log(velocityy * directiony + "", velocityx * directionx + "");
+                setX(getX() + velocityx * directionx);
+                setY(getY() + velocityy * directiony);
+            }
+        }
+
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
         Room r = getStage().getRooms()[(int) ((getX() + 10) / 125)][(int) (getY() / 125)];
-        if (ey == 0 && r != null && getY() == (r.getY()) * 125 + 58) {
-            goTo(0, 0);
-        } else {
-            setY(getY() + 1);
-        }
+        goTo();
     }
 
     public void setSprite() {
@@ -61,6 +97,7 @@ public abstract class Entity extends Actor {
         sprite.setFlip(false, true);
         setWidth(sprite.getWidth());
         setHeight(sprite.getHeight());
+        moveTo(16, 60);
     }
 
     @Override
