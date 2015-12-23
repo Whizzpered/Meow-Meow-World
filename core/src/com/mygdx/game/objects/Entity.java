@@ -47,11 +47,11 @@ public abstract class Entity extends Actor {
         for (int i = 0; i < dx; i++) {
             path.push(new Point(endx + i, endy));
         }
-        for (int i = 0; i < dy; i++) {
-            path.push(new Point(endx, endy + i));
-        }
         for (int i = 0; i > dx; i--) {
             path.push(new Point(endx + i, endy));
+        }
+        for (int i = 0; i < dy; i++) {
+            path.push(new Point(endx, endy + i));
         }
         for (int i = 0; i > dy; i--) {
             path.push(new Point(endx, endy + i));
