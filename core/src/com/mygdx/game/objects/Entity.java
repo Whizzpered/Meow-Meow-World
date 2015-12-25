@@ -41,28 +41,29 @@ public abstract class Entity extends Actor {
     }
 
     public void moveTo(int endx, int endy) {
-        int dx = endx - (int) getX() / 125;
-        int dy = endy - (int) getY() / 125;
-
-        for (int i = 0; i < dx; i++) {
+        int dx = (int) getX() / 125 - endx;
+        int dy = (int) getY() / 125 - endy;
+        Gdx.app.log("Volvo", dx + " " + dy);
+        for (int i = 1; i <= dx; i++) {
             path.push(new Point(endx + i, endy));
         }
-        for (int i = 0; i > dx; i--) {
+        for (int i = -1; i >= dx; i--) {
             path.push(new Point(endx + i, endy));
         }
-        for (int i = 0; i < dy; i++) {
+        for (int i = 1; i <= dy; i++) {
             path.push(new Point(endx, endy + i));
         }
-        for (int i = 0; i > dy; i--) {
+        for (int i = -1; i >= dy; i--) {
             path.push(new Point(endx, endy + i));
         }
     }
 
     public void goTo() {
-        Gdx.app.log("Volvo", path.size() + "");
+
         if (target == null) {
             if (path.size() > 0) {
                 target = path.pop();
+                Gdx.app.log("Valva", target.x + " " + target.y);
             }
         }
         if (target != null) {
@@ -77,7 +78,6 @@ public abstract class Entity extends Actor {
                 if (target.y != ry) {
                     directiony = (target.y - ry) / Math.abs(target.y - ry);
                 }
-                Gdx.app.log(velocityy * directiony + "", velocityx * directionx + "");
                 setX(getX() + velocityx * directionx);
                 setY(getY() + velocityy * directiony);
             }

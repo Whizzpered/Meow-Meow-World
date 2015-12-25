@@ -150,8 +150,6 @@ public class GameStage extends Stage {
                 }
             }
         });
-        addEntity(new Entity(15 * 125, 63 * 125 - 5) {
-        });
         addRoom(new Room(16, 61));
         addRoom(new Room(16, 60));
         addRoom(new Room(15, 61));
@@ -160,6 +158,8 @@ public class GameStage extends Stage {
         addRoom(new Room(16, 62));
         addRoom(new Room(15, 62));
         addRoom(new Room(15, 63));
+        addEntity(new Entity(15 * 125 + 32, 63 * 125 - 5) {
+        });
     }
 
     public void addEntity(Entity ent) {
