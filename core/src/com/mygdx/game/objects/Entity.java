@@ -8,7 +8,6 @@ package com.mygdx.game.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.GameStage;
 import java.awt.Point;
@@ -22,6 +21,7 @@ public abstract class Entity extends Actor {
 
     protected Sprite sprite;
     protected float velocityx = 1, velocityy = 1;
+    private int counter = 0;
     Stack<Point> path = new Stack<Point>();
     private Point target;
 
@@ -59,11 +59,16 @@ public abstract class Entity extends Actor {
     }
 
     public void goTo() {
-
         if (target == null) {
             if (path.size() > 0) {
                 target = path.pop();
-                Gdx.app.log("Valva", target.x + " " + target.y);
+                Gdx.app.log("Valva", "->" + target.x + " " + target.y);
+            } else {
+                counter++;
+                if (counter == 30) {
+                    counter = 0;
+                    moveTo(15 + getStage().r.nextInt(1), 60 + getStage().r.nextInt(4));
+                }
             }
         }
         if (target != null) {
@@ -88,7 +93,6 @@ public abstract class Entity extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        Room r = getStage().getRooms()[(int) ((getX() + 10) / 125)][(int) (getY() / 125)];
         goTo();
     }
 
@@ -97,7 +101,6 @@ public abstract class Entity extends Actor {
         sprite.setFlip(false, true);
         setWidth(sprite.getWidth());
         setHeight(sprite.getHeight());
-        moveTo(16, 60);
     }
 
     @Override

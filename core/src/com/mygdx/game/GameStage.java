@@ -9,7 +9,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -23,11 +22,13 @@ import com.mygdx.game.objects.Room;
 import com.mygdx.gui.Element;
 import com.mygdx.gui.GUILayer;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
  * @author Whizzpered
  */
+
 public class GameStage extends Stage {
 
     public MenuStage menu;
@@ -44,6 +45,7 @@ public class GameStage extends Stage {
     private ArrayList<Entity> entities = new ArrayList<Entity>(32);
     private Room[][] rooms = new Room[32][64];
     private Room buildHand;
+    public Random r = new Random();
     private float buildx, buildy;
     private float buildDeltaX, buildDeltaY;
     private Condition condition = USUALLY;

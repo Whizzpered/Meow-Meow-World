@@ -79,7 +79,9 @@ public class MenuStage extends Stage {
         layer.add(new Element("Start", 130, 150, 104, 58) {
             @Override
             public void tap() {
-                gameStage = new GameStage(getViewport(), thisClass);
+                if (gameStage == null) {
+                    gameStage = new GameStage(getViewport(), thisClass);
+                }
                 Gdx.input.setInputProcessor(gameStage);
                 gdxGame.stage = gameStage;
             }
